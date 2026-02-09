@@ -14,22 +14,32 @@ def criarConexao():
         print(f'Ops! Erro ao conectar: {e}')
     return con
 
-
 def criarTabelas():
     con = criarConexao()
     if con:
         try:
             cursor = con.cursor()
-            query = "CREATE TABLE IF NOT EXISTS inventario (id INTEGER PRIMARY KEY AUTOINCREMENT,nome TEXT NOT NULL,local TEXT,descricao TEXT,marca TEXT,data_compra DATE,valor DECIMAL,serie TEXT)"
-        
+            # Ajustei a query para ser exatamente igual aos campos do seu INSERT
+            query = """
+            CREATE TABLE IF NOT EXISTS inventario (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                nome TEXT NOT NULL,
+                local TEXT,
+                descricao TEXT,
+                marca TEXT,
+                dataCompra DATE,
+                valor DECIMAL,
+                serie TEXT
+            )
+            """
             cursor.execute(query)
             con.commit()
-
-            print("Tabela 'inventario' verificada/criada com sucesso!")
+            print("Sucesso: Tabela 'inventario' pronta para uso!")
         except lite.Error as e:
-            print(f'Erro ao criar tabela: {e}')
+            print(f"Erro Crítico ao criar tabela: {e}")
         finally:
             con.close()
+
 
 #Verificar quais tabelas existem
 def verificarTabelas():
@@ -49,6 +59,7 @@ def verificarTabelas():
 
 #-----------------CRUD-------------------------
 
+#Meu
 def inserirItem(listaDados):
     """
     lista_dados: deve ser uma lista ou tupla com os valores
@@ -58,7 +69,7 @@ def inserirItem(listaDados):
     if con:
         try:
             cursor = con.cursor()
-            query = 'INSERT INTO inventario(nome,local,descricao,marca,data_compra_valor,serie) VALUES (?,?,?,?,?,?,?)' 
+            query = 'INSERT INTO inventario(nome,local,descricao,marca,dataCompra,valor,serie) VALUES (?,?,?,?,?,?,?)' 
             cursor.execute(query, listaDados)
             con.commit() # Salva as alterações no banco, Muita gente esquece disso! No SQLite (e no MySQL), quando você altera dados (INSERT, UPDATE, DELETE), você precisa dar o "commit" para confirmar que a alteração é permanente.
             print("Dados inseridos com sucesso!")
@@ -92,7 +103,7 @@ def atualizarItem(listaDados):
     if con:
         try:
             cursor = con.cursor()
-            query = "UPDATE inventario SET nome=?, local=?, descricao=?, marca=?, data_compra=?, valor=?, serie=? WHERE id=?"
+            query = "UPDATE inventario SET nome=?, local=?, descricao=?, marca=?, dataCompra=?, valor=?, serie=? WHERE id=?"
             cursor.execute(query, listaDados)
             con.commit()
             print('Dados atualizados com sucesso')
@@ -116,6 +127,9 @@ def verItens():
             con.close()
     return dados
 
-#Testar codigo
-#if __name__ == "__main__":
+
+# ESSA LINHA É ESSENCIAL:
+if __name__ == "__main__":
+    criarTabelas()
+    verificarTabelas()
 
