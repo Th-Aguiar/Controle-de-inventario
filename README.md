@@ -50,4 +50,5 @@ python main.py
 
 **Deseja que eu te ajude a criar o arquivo `requirements.txt` ou prefere uma sugestão de como organizar as pastas para o primeiro "Push" no GitHub?**
 
-Desenvolvido por THIAGO DE OLIVEIRA AGUIAR
+```
+## Desenvolvido por THIAGO DE OLIVEIRA AGUIAR
